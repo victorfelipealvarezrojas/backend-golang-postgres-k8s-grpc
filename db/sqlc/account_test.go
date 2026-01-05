@@ -84,3 +84,22 @@ func TestListAccounts(t *testing.T) {
 		require.NoError(t, err)
 	}
 }
+
+func TestUpdateAccount(t *testing.T) {
+	account1 := createRandomAccount(t)
+
+	arg := UpdateAccountParams{
+		ID:      account1.ID,
+		Balance: utils.RandomMoney(),
+	}
+
+	account2, err := testQuerys.UpdateAccount(context.Background(), arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, account2)
+
+	require.Equal(t, arg.Balance, account2.Balance)
+	require.NotEqual(t, account1.Balance, account2.Balance)
+
+	err = testQuerys.DeleteAccount(context.Background(), account1.ID)
+	require.NoError(t, err)
+}
