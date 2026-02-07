@@ -9,9 +9,14 @@ import (
 	"github.com/valvarez/simplebank/utils"
 )
 
-func createRandomAccount(t *testing.T) Account {
+func createRandomAccount(t *testing.T, userName string) Account {
+
+	if userName == "" {
+		userName = utils.RandomOwner()
+	}
+
 	arg := CreateAccountsParams{
-		Owner:    "valvarez_test",
+		Owner:    userName,
 		Balance:  utils.RandomMoney(),
 		Currency: utils.RandomCurrency(),
 	}
@@ -31,7 +36,7 @@ func createRandomAccount(t *testing.T) Account {
 }
 
 func TestCreateAccount(t *testing.T) {
-	account1 := createRandomAccount(t)
+	account1 := createRandomAccount(t, "")
 
 	err := testQuerys.DeleteAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
@@ -39,7 +44,7 @@ func TestCreateAccount(t *testing.T) {
 
 func TestGetAccount(t *testing.T) {
 
-	account1 := createRandomAccount(t)
+	account1 := createRandomAccount(t, "")
 
 	account2, err := testQuerys.GetAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
@@ -56,7 +61,7 @@ func TestGetAccount(t *testing.T) {
 }
 
 func TestDeleteAccount(t *testing.T) {
-	account1 := createRandomAccount(t)
+	account1 := createRandomAccount(t, "")
 
 	err := testQuerys.DeleteAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
@@ -69,10 +74,9 @@ func TestDeleteAccount(t *testing.T) {
 }
 
 func TestListAccounts(t *testing.T) {
-	createRandomAccount(t)
+	createRandomAccount(t, "")
 	accounts, err := testQuerys.ListAccounts(context.Background())
 	require.NoError(t, err)
-	require.Len(t, accounts, 1)
 
 	for _, account := range accounts {
 		require.NotEmpty(t, account)
@@ -86,7 +90,7 @@ func TestListAccounts(t *testing.T) {
 }
 
 func TestUpdateAccount(t *testing.T) {
-	account1 := createRandomAccount(t)
+	account1 := createRandomAccount(t, "")
 
 	arg := UpdateAccountParams{
 		ID:      account1.ID,

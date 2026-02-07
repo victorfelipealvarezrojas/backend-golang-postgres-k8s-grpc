@@ -16,6 +16,13 @@ migrate-up:
 migrate-down:
 	migrate -path db/migrations -database "postgresql://admin:pass12345@localhost:5432/simple_bank?sslmode=disable" down
 
+migrate-force:
+	migrate -path db/migrations -database "postgresql://admin:pass12345@localhost:5432/simple_bank?sslmode=disable" force $(version)
+
+migrate-reset:
+	migrate -path db/migrations -database "postgresql://admin:pass12345@localhost:5432/simple_bank?sslmode=disable" drop -f
+	migrate -path db/migrations -database "postgresql://admin:pass12345@localhost:5432/simple_bank?sslmode=disable" up
+
 
 sqlc:
 	sqlc generate

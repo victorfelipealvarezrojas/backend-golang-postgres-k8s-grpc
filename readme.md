@@ -38,6 +38,20 @@ brew install kyleconroy/sqlc/sqlc
 O con Go:
 ```bash
 go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+
+**instalacion con Go, agrega al PATH:**
+```bash
+# Edita ~/.zshrc (o ~/.bash_profile si usas bash)
+nano ~/.zshrc
+
+# Agrega al final del archivo:
+export PATH=$PATH:$(go env GOPATH)/bin
+
+# Guarda (Ctrl+O, Enter, Ctrl+X) y recarga:
+source ~/.zshrc
+
+# Verifica la instalación:
+sqlc version
 ```
 
 #### Inicializar sqlc
